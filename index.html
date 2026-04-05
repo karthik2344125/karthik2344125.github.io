@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Karthik Praveen Patel — UI/UX Designer & Data Analyst</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:     #F7F5F2;
+      --ink:    #1A1A18;
+      --muted:  #7A7870;
+      --accent: #C8603A;
+      --line:   #E2DED8;
+      --card:   #EFEDE9;
+      --serif:  'DM Serif Display', Georgia, serif;
+      --sans:   'DM Sans', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg); color: var(--ink);
+      font-family: var(--sans); font-weight: 300;
+      line-height: 1.7; overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.3rem 5rem;
+      background: rgba(247,245,242,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      transition: padding 0.3s;
+    }
+    nav.scrolled { padding-top: 0.9rem; padding-bottom: 0.9rem; }
+    .nav-wordmark {
+      font-family: var(--sans); font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; align-items: center; }
+    .nav-links a {
+      font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      position: relative; padding-bottom: 2px; transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+      background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.25s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+    .nav-links a.active { color: var(--ink); }
+
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+    }
+    .hamburger span { display: block; width: 22px; height: 1.5px; background: var(--ink); transition: transform 0.3s, opacity 0.3s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed; top: 57px; left: 0; right: 0;
+      background: var(--bg); border-bottom: 1px solid var(--line);
+      flex-direction: column; z-index: 199; padding: 1.5rem 2rem; gap: 1.5rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-size: 0.85rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .mobile-menu a:hover { color: var(--accent); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+      padding: 0 5rem; padding-top: 90px; position: relative; overflow: hidden;
+    }
+    .hero-bg-text {
+      position: absolute; right: -0.02em; top: 50%; transform: translateY(-50%);
+      font-family: var(--serif); font-size: clamp(10rem, 20vw, 18rem);
+      color: var(--line); opacity: 0.5; user-select: none; pointer-events: none;
+      line-height: 1; letter-spacing: -0.04em; white-space: nowrap;
+    }
+    .hero-inner { max-width: 680px; position: relative; z-index: 1; }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 0.8rem;
+      font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.6rem;
+    }
+    .hero-eyebrow::before { content: ''; display: block; width: 2.8rem; height: 1px; background: var(--accent); }
+    h1.hero-name {
+      font-family: var(--serif); font-size: clamp(3.2rem, 6vw, 5.5rem);
+      line-height: 1.05; letter-spacing: -0.025em; margin-bottom: 1.8rem;
+    }
+    h1.hero-name em { font-style: italic; color: var(--accent); }
+    .hero-bio { font-size: 1.05rem; color: var(--muted); max-width: 46ch; line-height: 1.85; margin-bottom: 2.8rem; }
+    .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.9rem 2.2rem; font-family: var(--sans); font-size: 0.76rem;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; cursor: pointer; border: none;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn-primary { background: var(--ink); color: var(--bg); }
+    .btn-primary:hover { background: var(--accent); }
+    .btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--ink); }
+    .btn-outline:hover { background: var(--ink); color: var(--bg); }
+    .hero-scroll {
+      position: absolute; bottom: 2.8rem; left: 5rem;
+      display: flex; align-items: center; gap: 1rem;
+      font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted);
+    }
+    .scroll-bar { width: 3.5rem; height: 1px; background: var(--line); overflow: hidden; position: relative; }
+    .scroll-bar::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: var(--accent); animation: scrollBar 2s ease-in-out infinite;
+    }
+    @keyframes scrollBar { 0% { left: -100%; } 100% { left: 100%; } }
+
+    /* ── DIVIDER ── */
+    .divider { height: 1px; background: var(--line); margin: 0 5rem; }
+
+    /* ── SECTION BASE ── */
+    section { padding: 7rem 5rem; }
+    .section-label { font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+    .section-heading { font-family: var(--serif); font-size: clamp(2.2rem, 3.5vw, 3.2rem); line-height: 1.12; margin-bottom: 3.5rem; }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 6rem; align-items: start; }
+    .about-right p { font-size: 1rem; color: var(--muted); line-height: 1.85; margin-bottom: 1.3rem; }
+    .about-right p:last-of-type { margin-bottom: 0; }
+    .stats-row { display: flex; margin-top: 3rem; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .stat-cell { flex: 1; padding: 1.6rem 1.4rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .stat-value { font-family: var(--serif); font-size: 2.4rem; color: var(--accent); line-height: 1; display: block; margin-bottom: 0.3rem; }
+    .stat-desc { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--card); }
+    .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .skill-tile {
+      padding: 1.8rem 1.6rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      background: var(--card); transition: background 0.22s, color 0.22s; cursor: default;
+    }
+    .skill-tile:hover { background: var(--ink); color: var(--bg); }
+    .skill-tile:hover .skill-sub { color: rgba(247,245,242,0.45); }
+    .skill-glyph { font-size: 1.3rem; margin-bottom: 0.9rem; line-height: 1; }
+    .skill-name { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.2rem; }
+    .skill-sub { font-size: 0.7rem; color: var(--muted); }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--bg); }
+    .projects-list { display: flex; flex-direction: column; }
+    .project-row { display: grid; grid-template-columns: 64px 1fr auto; gap: 2.5rem; align-items: start; padding: 2.8rem 0; border-bottom: 1px solid var(--line); }
+    .project-row:first-child { border-top: 1px solid var(--line); }
+    .proj-index { font-family: var(--serif); font-size: 1rem; color: var(--line); padding-top: 0.3rem; transition: color 0.2s; }
+    .project-row:hover .proj-index { color: var(--accent); }
+    .proj-tags { display: flex; gap: 0.5rem; margin-bottom: 0.7rem; flex-wrap: wrap; }
+    .proj-tag { font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); border: 1px solid currentColor; padding: 0.15rem 0.55rem; border-radius: 2px; }
+    .proj-title { font-family: var(--serif); font-size: 1.6rem; line-height: 1.2; margin-bottom: 0.7rem; }
+    .proj-desc { font-size: 0.9rem; color: var(--muted); max-width: 52ch; line-height: 1.75; margin-bottom: 1.1rem; }
+    .proj-tools { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .proj-tool { font-size: 0.7rem; background: var(--card); border: 1px solid var(--line); padding: 0.2rem 0.6rem; color: var(--muted); }
+    .proj-action { padding-top: 0.3rem; }
+    .proj-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; padding: 0.7rem 1.2rem; border: 1px solid var(--line); white-space: nowrap;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .proj-link:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+    /* ── EDUCATION ── */
+    #education { background: var(--card); }
+    .edu-timeline { display: flex; flex-direction: column; }
+    .edu-row { display: grid; grid-template-columns: 200px 1fr; gap: 3rem; padding: 2.4rem 0; border-bottom: 1px solid var(--line); align-items: start; }
+    .edu-row:first-child { border-top: 1px solid var(--line); }
+    .edu-period { font-size: 0.8rem; color: var(--muted); padding-top: 0.25rem; }
+    .edu-degree { font-family: var(--serif); font-size: 1.25rem; margin-bottom: 0.25rem; line-height: 1.3; }
+    .edu-inst { font-size: 0.82rem; color: var(--accent); font-weight: 500; margin-bottom: 0.4rem; }
+    .edu-note { font-size: 0.83rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact { background: var(--bg); }
+
+    .contact-top {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem;
+      margin-bottom: 5rem; align-items: start;
+    }
+    .contact-headline { }
+    .contact-headline .section-heading { margin-bottom: 1rem; }
+    .contact-headline p { font-size: 1rem; color: var(--muted); max-width: 40ch; line-height: 1.8; margin-bottom: 2rem; }
+
+    /* availability badge */
+    .avail-badge {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.6rem 1.1rem; border: 1px solid var(--line);
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    }
+    .avail-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #4caf50;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* direct contact cards */
+    .contact-cards { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .contact-card {
+      display: grid; grid-template-columns: 120px 1fr;
+      border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      transition: background 0.2s;
+    }
+    .contact-card:hover { background: var(--card); }
+    .cc-label {
+      padding: 1.4rem 1.2rem; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted); border-right: 1px solid var(--line); display: flex; align-items: flex-start; padding-top: 1.6rem;
+    }
+    .cc-value { padding: 1.4rem 1.6rem; }
+    .cc-main { font-size: 0.95rem; font-weight: 500; margin-bottom: 0.2rem; color: var(--ink); }
+    .cc-main a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    .cc-main a:hover { color: var(--accent); }
+    .cc-sub { font-size: 0.75rem; color: var(--muted); }
+
+    /* social grid */
+    .contact-mid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+      margin-bottom: 5rem; align-items: start;
+    }
+    .contact-mid-left .subsection-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .social-grid { display: flex; flex-direction: column; gap: 0; border-top: 1px solid var(--line); }
+    .social-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 0; border-bottom: 1px solid var(--line);
+      text-decoration: none; color: var(--ink);
+      transition: padding-left 0.2s;
+    }
+    .social-row:hover { padding-left: 0.5rem; }
+    .social-row:hover .social-handle { color: var(--accent); }
+    .social-left { display: flex; align-items: center; gap: 1rem; }
+    .social-icon { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); color: var(--muted); flex-shrink: 0; }
+    .social-name { font-size: 0.85rem; font-weight: 500; }
+    .social-handle { font-size: 0.75rem; color: var(--muted); margin-top: 0.1rem; transition: color 0.2s; }
+    .social-arrow { color: var(--line); font-size: 0.85rem; }
+
+    /* quick links */
+    .contact-mid-right .subsection-label { font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 1.5rem; }
+    .quick-links { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+    .quick-link {
+      display: flex; flex-direction: column; gap: 0.3rem;
+      padding: 1.3rem 1.2rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      text-decoration: none; color: var(--ink); background: var(--bg);
+      transition: background 0.2s, color 0.2s;
+    }
+    .quick-link:hover { background: var(--ink); color: var(--bg); }
+    .quick-link:hover .ql-sub { color: rgba(247,245,242,0.5); }
+    .ql-icon { font-size: 1.1rem; margin-bottom: 0.4rem; }
+    .ql-name { font-size: 0.82rem; font-weight: 500; }
+    .ql-sub { font-size: 0.68rem; color: var(--muted); transition: color 0.2s; }
+
+    /* response times */
+    .response-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      border-top: 1px solid var(--line); border-left: 1px solid var(--line);
+      margin-bottom: 5rem;
+    }
+    .response-cell {
+      padding: 1.6rem 1.8rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    }
+    .response-channel { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+    .response-time { font-family: var(--serif); font-size: 1.4rem; color: var(--ink); line-height: 1.2; }
+
+    /* testimonials */
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); margin-bottom: 5rem; }
+    .testimonial {
+      padding: 2rem 1.8rem; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+      background: var(--bg); transition: background 0.2s;
+    }
+    .testimonial:hover { background: var(--card); }
+    .testimonial-quote { font-size: 0.9rem; color: var(--muted); line-height: 1.75; margin-bottom: 1.4rem; font-style: italic; }
+    .testimonial-quote::before { content: '\201C'; font-family: var(--serif); font-size: 2rem; color: var(--accent); line-height: 0; vertical-align: -0.5rem; margin-right: 0.2rem; }
+    .testimonial-name { font-size: 0.82rem; font-weight: 500; margin-bottom: 0.15rem; }
+    .testimonial-role { font-size: 0.72rem; color: var(--muted); }
+
+    /* CTA bar */
+    .cta-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 2.5rem 3rem; background: var(--ink); color: var(--bg);
+    }
+    .cta-bar-text { }
+    .cta-bar-title { font-family: var(--serif); font-size: 1.6rem; margin-bottom: 0.3rem; }
+    .cta-bar-sub { font-size: 0.85rem; color: rgba(247,245,242,0.55); }
+    .cta-bar-btn {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      padding: 0.9rem 2rem; background: var(--accent); color: var(--bg);
+      font-size: 0.76rem; letter-spacing: 0.1em; text-transform: uppercase;
+      text-decoration: none; border: none; cursor: pointer; white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .cta-bar-btn:hover { background: #b0522f; }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 1.8rem 5rem; border-top: 1px solid var(--line);
+      display: flex; justify-content: space-between; align-items: center; background: var(--bg);
+    }
+    footer p { font-size: 0.72rem; color: var(--muted); }
+    footer a { font-size: 0.72rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    footer a:hover { color: var(--accent); }
+
+    /* ── BACK TO TOP ── */
+    .back-top {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 100;
+      width: 40px; height: 40px; background: var(--ink); color: var(--bg);
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s, background 0.2s;
+    }
+    .back-top.visible { opacity: 1; pointer-events: all; }
+    .back-top:hover { background: var(--accent); }
+
+    /* ── FADE UP ── */
+    .fade-up { opacity: 0; transform: translateY(26px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .fade-up.in { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav { padding-left: 3rem; padding-right: 3rem; }
+      section { padding: 6rem 3rem; }
+      footer { padding: 1.5rem 3rem; }
+      .divider { margin: 0 3rem; }
+      .hero-scroll { left: 3rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-bg-text { display: none; }
+      .contact-top { grid-template-columns: 1fr; gap: 3rem; }
+      .contact-mid { grid-template-columns: 1fr; gap: 3rem; }
+      .response-row { grid-template-columns: 1fr 1fr; }
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 1.1rem 1.5rem; }
+      section { padding: 5rem 1.5rem; }
+      footer { padding: 1.5rem 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+      .divider { margin: 0 1.5rem; }
+      .hero-scroll { left: 1.5rem; }
+      #hero { padding: 0 1.5rem; padding-top: 75px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .skills-grid { grid-template-columns: repeat(2, 1fr); }
+      .project-row { grid-template-columns: 48px 1fr; }
+      .proj-action { grid-column: 2; }
+      .edu-row { grid-template-columns: 1fr; gap: 0.5rem; }
+      .response-row { grid-template-columns: 1fr; }
+      .quick-links { grid-template-columns: 1fr; }
+      .cta-bar { flex-direction: column; gap: 1.5rem; text-align: center; }
+      .contact-card { grid-template-columns: 1fr; }
+      .cc-label { border-right: none; border-bottom: 1px solid var(--line); padding: 1rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-wordmark" href="#hero">Karthik Praveen Patel</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#about"     onclick="closeMobile()">About</a>
+  <a href="#skills"    onclick="closeMobile()">Skills</a>
+  <a href="#projects"  onclick="closeMobile()">Projects</a>
+  <a href="#education" onclick="closeMobile()">Education</a>
+  <a href="#contact"   onclick="closeMobile()">Contact</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-text" aria-hidden="true">Design.</div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow fade-up">UI/UX Designer &amp; Data Analyst</div>
+    <h1 class="hero-name fade-up" style="transition-delay:0.12s">
+      Karthik<br/><em>Praveen</em><br/>Patel
+    </h1>
+    <p class="hero-bio fade-up" style="transition-delay:0.24s">
+      I design digital experiences that are intuitive, purposeful, and rooted in real human needs.
+      Where empathy meets data — that's where I work best.
+    </p>
+    <div class="hero-cta fade-up" style="transition-delay:0.36s">
+      <a class="btn btn-primary" href="#projects">View Projects</a>
+      <a class="btn btn-outline" href="#contact">Say Hello</a>
+    </div>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <div class="scroll-bar"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-left fade-up">
+      <div class="section-label">About Me</div>
+      <div class="section-heading">Design with<br/><em style="font-style:italic">intention.</em></div>
+    </div>
+    <div class="about-right fade-up" style="transition-delay:0.15s">
+      <p>I'm Karthik Praveen Patel — a UI/UX Designer and Data Analyst pursuing my Bachelor of Computer Applications in Artificial Intelligence at Jain Deemed to be University, Bengaluru.</p>
+      <p>Great design isn't just what something looks like — it's how it works, how it feels, and whether it solves a real problem. My dual focus on design and data means I bring both empathy and evidence to every decision I make.</p>
+      <p>From wireframing user flows in Figma to uncovering hidden patterns inside datasets with Python, I constantly explore the space where creativity and logic meet.</p>
+      <div class="stats-row">
+        <div class="stat-cell">
+          <span class="stat-value">2+</span>
+          <span class="stat-desc">Projects</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-value">8</span>
+          <span class="stat-desc">Tools</span>
+        </div>
+        <div class="stat-cell">
+          <span class="stat-value">3rd</span>
+          <span class="stat-desc">Year BCA (AI)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label fade-up">Toolkit</div>
+  <div class="section-heading fade-up">Skills &amp; Tools</div>
+  <div class="skills-grid">
+    <div class="skill-tile fade-up"><div class="skill-glyph">🎨</div><div class="skill-name">Figma</div><div class="skill-sub">UI Design &amp; Prototyping</div></div>
+    <div class="skill-tile fade-up" style="transition-delay:0.05s"><div class="skill-glyph">✏️</div><div class="skill-name">Sketch</div><div class="skill-sub">Interface Design</div></div>
+    <div class="skill-tile fade-up" style="transition-delay:0.1s"><div class="skill-glyph">🖋️</div><div class="skill-name">Illustrator</div><div class="skill-sub">Vector &amp; Branding</div></div>
+    <div class="skill-tile fade-up" style="transition-delay:0.15s"><div class="skill-glyph">🖼️</div><div class="skill-name">Photoshop</div><div class="skill-sub">Visual Editing</div></div>
+    <div class="skill-tile fade-up" style="transition-delay:0.2s"><div class="skill-glyph">🐍</div><div class="skill-name">Python</div><div class="skill-sub">Data Analysis</div></div>
+    <div class="skill-tile fade-up" style="transition-delay:0.25s"><div class="skill-glyph">🎭</div><div class="skill-name">CSS</div><div class="skill-sub">Styling &amp; Layouts</div></div>
+    <div class="skill-tile fade-up" style="transition-delay:0.3s"><div class="skill-glyph">⚡</div><div class="skill-name">JavaScript</div><div class="skill-sub">Interactivity</div></div>
+    <div class="skill-tile fade-up" style="transition-delay:0.35s"><div class="skill-glyph">🔍</div><div class="skill-name">User Research</div><div class="skill-sub">UX Strategy</div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label fade-up">Selected Work</div>
+  <div class="section-heading fade-up">Projects</div>
+  <div class="projects-list">
+    <div class="project-row fade-up">
+      <div class="proj-index">01</div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="proj-tag">UI/UX Design</span><span class="proj-tag">Capstone</span></div>
+        <div class="proj-title">RepairWale — Uber for Mechanics</div>
+        <p class="proj-desc">An on-demand mechanic booking platform designed end-to-end. Tackles the gap between vehicle breakdowns and reliable roadside help — from initial service discovery through to real-time mechanic tracking and booking confirmation.</p>
+        <div class="proj-tools">
+          <span class="proj-tool">Figma</span><span class="proj-tool">User Research</span><span class="proj-tool">Prototyping</span><span class="proj-tool">Wireframing</span><span class="proj-tool">User Flows</span>
+        </div>
+      </div>
+      <div class="proj-action">
+        <a class="proj-link" href="https://github.com/karthik2344125" target="_blank" rel="noopener">GitHub <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 10L10 1M10 1H3.5M10 1V7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></a>
+      </div>
+    </div>
+    <div class="project-row fade-up" style="transition-delay:0.1s">
+      <div class="proj-index">02</div>
+      <div class="proj-body">
+        <div class="proj-tags"><span class="proj-tag">Data Analysis</span><span class="proj-tag">Python</span></div>
+        <div class="proj-title">Netflix Content Analysis</div>
+        <p class="proj-desc">A deep-dive into Netflix's content library using Python. Uncovered patterns in genre growth, regional content distribution, and release trends over time — translating raw CSV data into clear visualisations that tell a story about how streaming has evolved.</p>
+        <div class="proj-tools">
+          <span class="proj-tool">Python</span><span class="proj-tool">Pandas</span><span class="proj-tool">Matplotlib</span><span class="proj-tool">Seaborn</span><span class="proj-tool">Jupyter</span>
+        </div>
+      </div>
+      <div class="proj-action">
+        <a class="proj-link" href="https://github.com/karthik2344125" target="_blank" rel="noopener">GitHub <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M1 10L10 1M10 1H3.5M10 1V7.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-label fade-up">Academic Background</div>
+  <div class="section-heading fade-up">Education</div>
+  <div class="edu-timeline">
+    <div class="edu-row fade-up">
+      <div class="edu-period">2023 — 2026</div>
+      <div>
+        <div class="edu-degree">Bachelor of Computer Applications (AI)</div>
+        <div class="edu-inst">Jain Deemed to be University, Bengaluru</div>
+        <div class="edu-note">Specialising in Artificial Intelligence and Computer Applications</div>
+      </div>
+    </div>
+    <div class="edu-row fade-up" style="transition-delay:0.1s">
+      <div class="edu-period">2021 — 2023</div>
+      <div>
+        <div class="edu-degree">Pre-University Course (PUC)</div>
+        <div class="edu-inst">St. Joseph's Indian Composite PU College</div>
+        <div class="edu-note">CEBA Stream — Computer Science, Economics, Business Studies, Accountancy</div>
+      </div>
+    </div>
+    <div class="edu-row fade-up" style="transition-delay:0.2s">
+      <div class="edu-period">2019 — 2021</div>
+      <div>
+        <div class="edu-degree">High School (SSLC)</div>
+        <div class="edu-inst">Venus International School</div>
+        <div class="edu-note">Secondary Education with focus on Science and Mathematics</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CONTACT -->
+<section id="contact">
+
+  <!-- Top: headline + direct info -->
+  <div class="contact-top">
+    <div class="contact-headline fade-up">
+      <div class="section-label">Let's Connect</div>
+      <div class="section-heading">Get In<br/>Touch</div>
+      <p>Open to UI/UX design projects, data analysis work, web development, and freelance opportunities. Let's build something great together.</p>
+      <div class="avail-badge">
+        <div class="avail-dot"></div>
+        Available for projects
+      </div>
+    </div>
+    <div class="contact-cards fade-up" style="transition-delay:0.15s">
+      <div class="contact-card">
+        <div class="cc-label">Email</div>
+        <div class="cc-value">
+          <div class="cc-main"><a href="mailto:patelkarthik07@gmail.com">patelkarthik07@gmail.com</a></div>
+          <div class="cc-sub">Response within 24 hours</div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-label">Age</div>
+        <div class="cc-value">
+          <div class="cc-main">20 Years Old</div>
+          <div class="cc-sub">Young &amp; energetic professional</div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-label">Specialisations</div>
+        <div class="cc-value">
+          <div class="cc-main">UI/UX · Web Dev · Data Analysis</div>
+          <div class="cc-sub">Multi-domain expertise</div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="cc-label">Tech Stack</div>
+        <div class="cc-value">
+          <div class="cc-main">Python, JS, HTML, CSS, Figma</div>
+          <div class="cc-sub">Node.js · SQL · MS Office</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mid: socials + quick links -->
+  <div class="contact-mid">
+    <div class="contact-mid-left fade-up">
+      <div class="subsection-label">Social Connections</div>
+      <div class="social-grid">
+        <a class="social-row" href="https://github.com/karthik2344125" target="_blank" rel="noopener">
+          <div class="social-left">
+            <div class="social-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.373 0 12c0 5.303 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61-.546-1.387-1.333-1.756-1.333-1.756-1.09-.745.083-.729.083-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.418-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.468-2.38 1.235-3.22-.124-.303-.535-1.524.118-3.176 0 0 1.008-.322 3.3 1.23A11.51 11.51 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.29-1.552 3.297-1.23 3.297-1.23.653 1.652.242 2.873.12 3.176.77.84 1.232 1.91 1.232 3.22 0 4.61-2.805 5.625-5.475 5.92.43.37.823 1.102.823 2.222 0 1.606-.015 2.898-.015 3.293 0 .322.216.694.825.576C20.565 21.795 24 17.298 24 12c0-6.627-5.373-12-12-12z"/></svg>
+            </div>
+            <div>
+              <div class="social-name">GitHub</div>
+              <div class="social-handle">@karthik2344125</div>
+            </div>
+          </div>
+          <span class="social-arrow">→</span>
+        </a>
+        <a class="social-row" href="https://www.linkedin.com/in/karthik-p-patel-811b652b3" target="_blank" rel="noopener">
+          <div class="social-left">
+            <div class="social-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </div>
+            <div>
+              <div class="social-name">LinkedIn</div>
+              <div class="social-handle">Karthik Praveen Patel</div>
+            </div>
+          </div>
+          <span class="social-arrow">→</span>
+        </a>
+        <a class="social-row" href="https://twitter.com/karthikdev" target="_blank" rel="noopener">
+          <div class="social-left">
+            <div class="social-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </div>
+            <div>
+              <div class="social-name">Twitter / X</div>
+              <div class="social-handle">@karthikdev</div>
+            </div>
+          </div>
+          <span class="social-arrow">→</span>
+        </a>
+        <a class="social-row" href="https://instagram.com/karthik.codes" target="_blank" rel="noopener">
+          <div class="social-left">
+            <div class="social-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </div>
+            <div>
+              <div class="social-name">Instagram</div>
+              <div class="social-handle">@karthik.codes</div>
+            </div>
+          </div>
+          <span class="social-arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="contact-mid-right fade-up" style="transition-delay:0.15s">
+      <div class="subsection-label">Quick Access</div>
+      <div class="quick-links">
+        <a class="quick-link" href="mailto:patelkarthik07@gmail.com">
+          <div class="ql-icon">✉️</div>
+          <div class="ql-name">Send Email</div>
+          <div class="ql-sub">Direct contact</div>
+        </a>
+        <a class="quick-link" href="https://github.com/karthik2344125" target="_blank" rel="noopener">
+          <div class="ql-icon">💻</div>
+          <div class="ql-name">View Projects</div>
+          <div class="ql-sub">GitHub repos</div>
+        </a>
+        <a class="quick-link" href="#projects">
+          <div class="ql-icon">🗂️</div>
+          <div class="ql-name">Portfolio</div>
+          <div class="ql-sub">Selected work</div>
+        </a>
+        <a class="quick-link" href="mailto:patelkarthik07@gmail.com?subject=Schedule%20a%20Meeting">
+          <div class="ql-icon">📅</div>
+          <div class="ql-name">Schedule a Call</div>
+          <div class="ql-sub">Book a session</div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Response times -->
+  <div class="section-label fade-up" style="margin-bottom:1.2rem">Response Times</div>
+  <div class="response-row fade-up" style="transition-delay:0.05s">
+    <div class="response-cell">
+      <div class="response-channel">Email</div>
+      <div class="response-time">Within 24 hrs</div>
+    </div>
+    <div class="response-cell">
+      <div class="response-channel">Project Enquiries</div>
+      <div class="response-time">Same day</div>
+    </div>
+    <div class="response-cell">
+      <div class="response-channel">Consultation</div>
+      <div class="response-time">Within 2 hrs</div>
+    </div>
+  </div>
+
+  <!-- Testimonials -->
+  <div class="section-label fade-up" style="margin-bottom:1.2rem;margin-top:4rem">Kind Words</div>
+  <div class="testimonials-grid fade-up" style="transition-delay:0.05s">
+    <div class="testimonial">
+      <p class="testimonial-quote">Karthik's design sense and technical skills are impressive for someone so young. His work exceeded our expectations.</p>
+      <div class="testimonial-name">Sarah Johnson</div>
+      <div class="testimonial-role">Project Manager, Tech Solutions</div>
+    </div>
+    <div class="testimonial">
+      <p class="testimonial-quote">Working with Karthik was refreshing. He brought fresh perspectives and delivered high-quality solutions.</p>
+      <div class="testimonial-name">Michael Chen</div>
+      <div class="testimonial-role">Senior Developer, Digital Agency</div>
+    </div>
+    <div class="testimonial">
+      <p class="testimonial-quote">Karthik's attention to detail in both design and development made our project a success. Highly recommended.</p>
+      <div class="testimonial-name">Emily Rodriguez</div>
+      <div class="testimonial-role">Startup Founder</div>
+    </div>
+  </div>
+
+  <!-- CTA bar -->
+  <div class="cta-bar fade-up" style="transition-delay:0.1s;margin-top:4rem">
+    <div class="cta-bar-text">
+      <div class="cta-bar-title">Ready to start?</div>
+      <div class="cta-bar-sub">Let's discuss your project and bring your ideas to life.</div>
+    </div>
+    <a class="cta-bar-btn" href="mailto:patelkarthik07@gmail.com">
+      Send a Message
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 11L11 1M11 1H4M11 1V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </a>
+  </div>
+
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 Karthik Praveen Patel</p>
+  <a href="#hero">Back to top ↑</a>
+</footer>
+
+<!-- BACK TO TOP -->
+<button class="back-top" id="backTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 12V2M2 7L7 2L12 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+
+<script>
+  // Hero fades on load
+  window.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('#hero .fade-up').forEach(el => {
+      const delay = parseFloat(el.style.transitionDelay || '0') * 1000;
+      setTimeout(() => el.classList.add('in'), delay + 80);
+    });
+  });
+
+  // Scroll-triggered fade-up
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('section:not(#hero) .fade-up').forEach(el => io.observe(el));
+
+  // Nav compact + active + back-to-top
+  const navbar  = document.getElementById('navbar');
+  const backTop = document.getElementById('backTop');
+  const sectionIds = ['about','skills','projects','education','contact'];
+
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    navbar.classList.toggle('scrolled', y > 60);
+    backTop.classList.toggle('visible', y > 500);
+    let current = '';
+    sectionIds.forEach(id => {
+      const el = document.getElementById(id);
+      if (el && el.offsetTop - 120 <= y) current = id;
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  });
+
+  // Mobile menu
+  const hamburger  = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+  });
+  function closeMobile() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  }
+</script>
+</body>
+</html>
